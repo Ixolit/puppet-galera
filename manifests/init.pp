@@ -487,8 +487,7 @@ class galera(
   } else {
     if ($::fqdn == $galera_master) {
       $_packages_before = [
-        Class['mysql::server::install'],
-        Exec['bootstrap_galera_cluster']
+        Class['mysql::server::install']
       ]
     } else {
       $_packages_before = [
