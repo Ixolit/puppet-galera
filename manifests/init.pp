@@ -580,19 +580,20 @@ class galera(
       before => $_packages_before,
     }
 
-    if ($::fqdn == $galera_master) {
-      # If there are no other servers up and we are the master, the cluster
-      # needs to be bootstrapped. This happens before the service is managed
-      $server_list = join($_nodes_tmp, ' ')
+    # Not working with percona 8...
+    #if ($::fqdn == $galera_master) {
+    #  # If there are no other servers up and we are the master, the cluster
+    #  # needs to be bootstrapped. This happens before the service is managed
+    #  $server_list = join($_nodes_tmp, ' ')##
 
-      exec { 'bootstrap_galera_cluster':
-        command  => $params['bootstrap_command'],
-        unless   => "nmap -Pn -p ${wsrep_group_comm_port} ${server_list} | grep -q '${wsrep_group_comm_port}/tcp open'",
-        require  => Class['mysql::server::installdb'],
-        before   => Service['mysqld'],
-        provider => shell,
-        path     => '/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/usr/local/sbin'
-      }
-    }
+#      exec { 'bootstrap_galera_cluster':
+#        command  => $params['bootstrap_command'],
+#        unless   => "nmap -Pn -p ${wsrep_group_comm_port} ${server_list} | grep -q '${wsrep_group_comm_port}/tcp open'",
+#        require  => Class['mysql::server::installdb'],
+#        before   => Service['mysqld'],
+ #       provider => shell,
+ #       path     => '/usr/bin:/bin:/usr/local/bin:/usr/sbin:/sbin:/usr/local/sbin'
+ #     }
+  #  }
   }
 }
