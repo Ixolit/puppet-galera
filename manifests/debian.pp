@@ -79,7 +79,7 @@ class galera::debian {
       mysql_grant { 'debian-sys-maint@localhost/*.*':
         ensure     => 'present',
         options    => ['GRANT'],
-        privileges => ['ALTER', 'ALTER ROUTINE', 'CREATE', 'CREATE ROLE', 'CREATE ROUTINE', 'CREATE TABLESPACE', 'CREATE TEMPORARY TABLES', 'CREATE USER', 'CREATE VIEW', 'DELETE', 'DROP', 'DROP ROLE', 'EVENT', 'EXECUTE', 'FILE', 'INDEX', 'INSERT', 'LOCK TABLES', 'PROCESS', 'REFERENCES', 'RELOAD', 'REPLICATION CLIENT', 'REPLICATION SLAVE', 'SELECT', 'SHOW DATABASES', 'SHOW VIEW', 'SHUTDOWN', 'SUPER', 'TRIGGER', 'UPDATE'],
+        privileges => ['ALL'],
         table      => '*.*',
         user       => 'debian-sys-maint@localhost',
       }
