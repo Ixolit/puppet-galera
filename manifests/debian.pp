@@ -76,12 +76,24 @@ class galera::debian {
         Exec['create .my.cnf for user root'] -> Mysql_user['debian-sys-maint@localhost']
       }
 
-      mysql_grant { 'debian-sys-maint@localhost/*.*':
-        ensure     => 'present',
-        options    => ['GRANT'],
-        privileges => ['ALL'],
-        table      => '*.*',
-        user       => 'debian-sys-maint@localhost',
+      if versioncmp($::galera::vendor_version, '8.0') >= 0 {
+        # percona 8 converts ALL to the privs. If we use "ALL", puppet regrant the privs every run
+        mysql_grant { 'debian-sys-maint@localhost/*.*':
+          ensure     => 'present',
+          options    => ['GRANT'],
+          privileges => ['ALTER', 'ALTER ROUTINE', 'CREATE', 'CREATE ROLE', 'CREATE ROUTINE', 'CREATE TABLESPACE', 'CREATE TEMPORARY TABLES', 'CREATE USER', 'CREATE VIEW', 'DELETE', 'DROP', 'DROP ROLE', 'EVENT', 'EXECUTE', 'FILE', 'INDEX', 'INSERT', 'LOCK TABLES', 'PROCESS', 'REFERENCES', 'RELOAD', 'REPLICATION CLIENT', 'REPLICATION SLAVE', 'SELECT', 'SHOW DATABASES', 'SHOW VIEW', 'SHUTDOWN', 'SUPER', 'TRIGGER', 'UPDATE'],
+          table      => '*.*',
+          user       => 'debian-sys-maint@localhost',
+        }
+      }
+      else {
+        mysql_grant { 'debian-sys-maint@localhost/*.*':
+          ensure     => 'present',
+          options    => ['GRANT'],
+          privileges => ['ALL'],
+          table      => '*.*',
+          user       => 'debian-sys-maint@localhost',
+        }
       }
 
       file { '/etc/mysql/debian.cnf':
